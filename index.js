@@ -6,6 +6,7 @@ import readline from 'readline'
 import { greetings } from './modules/greetings.js'
 import { ls } from './modules/ls.js'
 import { read } from './modules/readFile.js'
+import { addFile } from './modules/addFile.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -77,21 +78,29 @@ const main = async () => {
 
       case input=='ls':
         ls(currentDir);
+        onsole.log(`You are currently in ${currentDir}`);
         break;
 
       case input.startsWith('cat '):
         fs.stat(input.substring(4), (err, stats) => {
           if (err) {
             console.log('Invalid input');
+            onsole.log(`You are currently in ${currentDir}`);
           } else {
             if (stats.isFile()) {
               read(input.substring(4));
+              onsole.log(`You are currently in ${currentDir}`);
             } else {
               console.log('Invalid input');
+              onsole.log(`You are currently in ${currentDir}`);
             }
           }
         })
         break;
+
+        case input.startsWith('add '):
+          addFile(currentDir, input.substring(4));
+          break;
         default:
 
     }
