@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url'
 import readline from 'readline'
 import { greetings } from './modules/greetings.js'
 import { ls } from './modules/ls.js'
+import { read } from './modules/readFile.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -78,6 +79,19 @@ const main = async () => {
         ls(currentDir);
         break;
 
+      case input.startsWith('cat '):
+        fs.stat(input.substring(4), (err, stats) => {
+          if (err) {
+            console.log('Invalid input');
+          } else {
+            if (stats.isFile()) {
+              read(input.substring(4));
+            } else {
+              console.log('Invalid input');
+            }
+          }
+        })
+        break;
         default:
 
     }
