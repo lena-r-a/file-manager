@@ -7,6 +7,7 @@ import { greetings } from './modules/greetings.js'
 import { ls } from './modules/ls.js'
 import { read } from './modules/readFile.js'
 import { addFile } from './modules/addFile.js'
+import { rename } from './modules/rename.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -101,6 +102,15 @@ const main = async () => {
         case input.startsWith('add '):
           addFile(currentDir, input.substring(4));
           break;
+
+        case input.startsWith('rn '):
+          let parts = input.split(' ');
+          if (parts.length == 3) {
+            rename(parts[1], parts[2]);
+          } else {
+            console.log('Invalid input!')
+          }
+          
         default:
 
     }
