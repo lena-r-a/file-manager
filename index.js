@@ -40,8 +40,8 @@ const main = async () => {
         rl.close();
 
       case input == 'up':
-        if (currentDir.split('\\')[1]) {
-          currentDir = currentDir.split('\\').slice(0, -1).join('\\');
+        if (currentDir != path.parse(currentDir).root) {
+          currentDir = path.dirname(currentDir);
           console.log(`You are currently in ${currentDir}`);
         } else {
           console.log(`You are currently in ${currentDir}`);
