@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs, { stat } from 'fs'
 import os from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -30,12 +30,12 @@ const main = async () => {
   rl.prompt();
   rl.on('line', (input) => {
 
-    switch (input) {
+    switch (true) {
 
-      case '.exit':
+      case input == '.exit':
         rl.close();
 
-      case 'up':
+      case input == 'up':
         if (currentDir.split('\\')[1]) {
           currentDir = currentDir.split('\\').slice(0, -1).join('\\');
           console.log(`You are currently in ${currentDir}`);
@@ -43,38 +43,38 @@ const main = async () => {
           console.log(`You are currently in ${currentDir}`);
         }
         break;
-      // case startsWith("cd "):
-      //   console.log("works")
-
-      default:
-        if (input.startsWith('cd ')) {
-          console.log(input)
-          let newpath; 
-          fs.access(input.substring(3), (err) => {
-            if (err) {
-              newpath = path.join(currentDir, input.substring(3))
-              console.log(newpath)
-            } else {
-              newpath = input.substring(3) ;
-            }           
-          })
-          fs.stat(newpath, () => {
-            if (err) {
-              console.log('Invalid input')
-            } else {
-              if (!stats.isFile()) {
-                currentDir = newpath;
+      case input.startsWith('cd '):
+        fs.stat(input.substring(3), (err, stats) => {
+          if (err) {
+            fs.stat(path.join(currentDir, input.substring(3)), (error, st) => {
+              if (error) {
+                console.log('Invalid input');
                 console.log(`You are currently in ${currentDir}`);
               } else {
-                console.log('Invalid input')
+                if (st.isFile()) {
+                  console.log('Invalid input');
+                  console.log(`You are currently in ${currentDir}`);
+                } else {
+                  currentDir = path.join(currentDir, input.substring(3));
+                  console.log(`You are currently in ${currentDir}`);
+                }
               }
+            })
+          } else {
+            if (stats.isFile()) {
+              console.log('Invalid input');
+              console.log(`You are currently in ${currentDir}`);
+            } else {
+              currentDir = input.substring(3);
+              console.log(`You are currently in ${currentDir}`);
             }
-          })
 
-        } else {
-          console.log('Invalid input');
-        }
-        
+          }
+        })
+        break;
+
+      default:
+
     }
 
   });
