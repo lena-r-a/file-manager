@@ -4,6 +4,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import readline from 'readline'
 import { greetings } from './modules/greetings.js'
+import { ls } from './modules/ls.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -73,7 +74,11 @@ const main = async () => {
         })
         break;
 
-      default:
+      case input=='ls':
+        ls(currentDir);
+        break;
+
+        default:
 
     }
 
