@@ -53,7 +53,7 @@ const main = async () => {
       case input.startsWith('cd '):
         fs.stat(input.substring(3), (err, stats) => {
           if (err) {
-            fs.stat(path.join(currentDir, input.substring(3)), (error, st) => {
+            fs.stat(path.join(currentDir, input.substring(3).replace(/"/g, '')), (error, st) => {
               if (error) {
                 console.log('Invalid input');
                 console.log(`You are currently in ${currentDir}`);
@@ -62,7 +62,7 @@ const main = async () => {
                   console.log('Invalid input');
                   console.log(`You are currently in ${currentDir}`);
                 } else {
-                  currentDir = path.join(currentDir, input.substring(3));
+                  currentDir = path.join(currentDir, input.substring(3).replace(/"/g, ''));
                   console.log(`You are currently in ${currentDir}`);
                 }
               }
@@ -82,11 +82,11 @@ const main = async () => {
 
       case input == 'ls':
         ls(currentDir);
-        onsole.log(`You are currently in ${currentDir}`);
+        console.log(`You are currently in ${currentDir}`);
         break;
 
       case input.startsWith('cat '):
-        fs.stat(input.substring(4), (err, stats) => {
+        fs.stat(input.substring(4).replace(/"/g, ''), (err, stats) => {
           if (err) {
             console.log('Invalid input');
             console.log(`You are currently in ${currentDir}`);
@@ -103,14 +103,14 @@ const main = async () => {
         break;
 
       case input.startsWith('add '):
-        addFile(currentDir, input.substring(4));
+        addFile(currentDir, input.substring(4).replace(/"/g, ''));
         console.log(`You are currently in ${currentDir}`);
         break;
 
       case input.startsWith('rn '):
         let parts = input.split(' ');
         if (parts.length == 3) {
-          rename(parts[1], parts[2]);
+          rename(parts[1].replace(/"/g, ''), parts[2].replace(/"/g, ''));
           console.log(`You are currently in ${currentDir}`);
         } else {
           console.log('Invalid input!')
@@ -119,7 +119,7 @@ const main = async () => {
       case input.startsWith('cp '):
         let cp_parts = input.split(' ');
         if (cp_parts.length == 3) {
-          copyFile(cp_parts[1], cp_parts[2]);
+          copyFile(cp_parts[1].replace(/"/g, ''), cp_parts[2].replace(/"/g, ''));
           console.log(`You are currently in ${currentDir}`);
         } else {
           console.log('Invalid input!')
@@ -128,7 +128,7 @@ const main = async () => {
       case input.startsWith('mv '):
         let mv_parts = input.split(' ');
         if (mv_parts.length == 3) {
-          moveFile(mv_parts[1], mv_parts[2]);
+          moveFile(mv_parts[1].replace(/"/g, ''), mv_parts[2].replace(/"/g, ''));
           console.log(`You are currently in ${currentDir}`);
         } else {
           console.log('Invalid input!')
@@ -136,7 +136,7 @@ const main = async () => {
         break;
       
       case input.startsWith('rm '):
-        removeFile(input.substring(3));
+        removeFile(input.substring(3).replace(/"/g, ''));
         console.log(`You are currently in ${currentDir}`);
         break;
 
