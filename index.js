@@ -11,6 +11,7 @@ import { rename } from './modules/rename.js'
 import { copyFile } from './modules/cp.js'
 import { moveFile } from './modules/mv.js'
 import { removeFile } from './modules/rm.js'
+import { getOSdata } from './modules/os.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -134,11 +135,14 @@ const main = async () => {
           console.log('Invalid input!')
         }
         break;
-      
+
       case input.startsWith('rm '):
         removeFile(input.substring(3).replace(/"/g, ''));
         console.log(`You are currently in ${currentDir}`);
         break;
+
+      case input.startsWith('os '):
+        getOSdata(input);
 
       default:
 
