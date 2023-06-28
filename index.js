@@ -8,6 +8,9 @@ import { ls } from './modules/ls.js'
 import { read } from './modules/readFile.js'
 import { addFile } from './modules/addFile.js'
 import { rename } from './modules/rename.js'
+import { copyFile } from './modules/cp.js'
+import { moveFile } from './modules/mv.js'
+import { removeFile } from './modules/rm.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -77,7 +80,7 @@ const main = async () => {
         })
         break;
 
-      case input=='ls':
+      case input == 'ls':
         ls(currentDir);
         onsole.log(`You are currently in ${currentDir}`);
         break;
@@ -86,32 +89,58 @@ const main = async () => {
         fs.stat(input.substring(4), (err, stats) => {
           if (err) {
             console.log('Invalid input');
-            onsole.log(`You are currently in ${currentDir}`);
+            console.log(`You are currently in ${currentDir}`);
           } else {
             if (stats.isFile()) {
               read(input.substring(4));
-              onsole.log(`You are currently in ${currentDir}`);
+              console.log(`You are currently in ${currentDir}`);
             } else {
               console.log('Invalid input');
-              onsole.log(`You are currently in ${currentDir}`);
+              console.log(`You are currently in ${currentDir}`);
             }
           }
         })
         break;
 
-        case input.startsWith('add '):
-          addFile(currentDir, input.substring(4));
-          break;
+      case input.startsWith('add '):
+        addFile(currentDir, input.substring(4));
+        console.log(`You are currently in ${currentDir}`);
+        break;
 
-        case input.startsWith('rn '):
-          let parts = input.split(' ');
-          if (parts.length == 3) {
-            rename(parts[1], parts[2]);
-          } else {
-            console.log('Invalid input!')
-          }
-          
-        default:
+      case input.startsWith('rn '):
+        let parts = input.split(' ');
+        if (parts.length == 3) {
+          rename(parts[1], parts[2]);
+          console.log(`You are currently in ${currentDir}`);
+        } else {
+          console.log('Invalid input!')
+        }
+        break;
+      case input.startsWith('cp '):
+        let cp_parts = input.split(' ');
+        if (cp_parts.length == 3) {
+          copyFile(cp_parts[1], cp_parts[2]);
+          console.log(`You are currently in ${currentDir}`);
+        } else {
+          console.log('Invalid input!')
+        }
+        break;
+      case input.startsWith('mv '):
+        let mv_parts = input.split(' ');
+        if (mv_parts.length == 3) {
+          moveFile(mv_parts[1], mv_parts[2]);
+          console.log(`You are currently in ${currentDir}`);
+        } else {
+          console.log('Invalid input!')
+        }
+        break;
+      
+      case input.startsWith('rm '):
+        removeFile(input.substring(3));
+        console.log(`You are currently in ${currentDir}`);
+        break;
+
+      default:
 
     }
 
