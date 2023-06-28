@@ -51,7 +51,7 @@ const main = async () => {
         }
         break;
       case input.startsWith('cd '):
-        fs.stat(input.substring(3), (err, stats) => {
+        fs.stat(input.substring(3).replace(/"/g, ''), (err, stats) => {
           if (err) {
             fs.stat(path.join(currentDir, input.substring(3).replace(/"/g, '')), (error, st) => {
               if (error) {
@@ -72,7 +72,7 @@ const main = async () => {
               console.log('Invalid input');
               console.log(`You are currently in ${currentDir}`);
             } else {
-              currentDir = input.substring(3);
+              currentDir = input.substring(3).replace(/"/g, '');
               console.log(`You are currently in ${currentDir}`);
             }
 
@@ -92,7 +92,7 @@ const main = async () => {
             console.log(`You are currently in ${currentDir}`);
           } else {
             if (stats.isFile()) {
-              read(input.substring(4));
+              read(input.substring(4).replace(/"/g, ''));
               console.log(`You are currently in ${currentDir}`);
             } else {
               console.log('Invalid input');
