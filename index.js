@@ -12,6 +12,7 @@ import { copyFile } from './modules/cp.js'
 import { moveFile } from './modules/mv.js'
 import { removeFile } from './modules/rm.js'
 import { getOSdata } from './modules/os.js'
+import { calculateHash } from './modules/hash.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -143,7 +144,14 @@ const main = async () => {
 
       case input.startsWith('os '):
         getOSdata(input);
+        console.log(`You are currently in ${currentDir}`);
+        break;
 
+      case input.startsWith('hash '):
+        calculateHash(input.substring(5));
+        console.log(`You are currently in ${currentDir}`);
+        break;
+        
       default:
 
     }
