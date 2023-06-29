@@ -13,6 +13,7 @@ import { moveFile } from './modules/mv.js'
 import { removeFile } from './modules/rm.js'
 import { getOSdata } from './modules/os.js'
 import { calculateHash } from './modules/hash.js'
+import { compressFile, decompressFile } from './modules/brotli.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -110,7 +111,7 @@ const main = async () => {
         break;
 
       case input.startsWith('rn '):
-        let parts = input.split(' ');
+        let parts = input.split(' ').length == 3 ? input.split(' ') : input.split(' \"');;
         if (parts.length == 3) {
           rename(parts[1].replace(/"/g, ''), parts[2].replace(/"/g, ''));
           console.log(`You are currently in ${currentDir}`);
@@ -119,7 +120,7 @@ const main = async () => {
         }
         break;
       case input.startsWith('cp '):
-        let cp_parts = input.split(' ');
+        let cp_parts = input.split(' ').length == 3 ? input.split(' ') : input.split(' \"');;
         if (cp_parts.length == 3) {
           copyFile(cp_parts[1].replace(/"/g, ''), cp_parts[2].replace(/"/g, ''));
           console.log(`You are currently in ${currentDir}`);
@@ -128,7 +129,7 @@ const main = async () => {
         }
         break;
       case input.startsWith('mv '):
-        let mv_parts = input.split(' ');
+        let mv_parts = input.split(' ').length == 3 ? input.split(' ') : input.split(' \"');
         if (mv_parts.length == 3) {
           moveFile(mv_parts[1].replace(/"/g, ''), mv_parts[2].replace(/"/g, ''));
           console.log(`You are currently in ${currentDir}`);
@@ -151,14 +152,35 @@ const main = async () => {
         calculateHash(input.substring(5));
         console.log(`You are currently in ${currentDir}`);
         break;
+
+      case input.startsWith('compress '):
+        let compress_parts = input.split(' ').length == 3 ? input.split(' ') : input.split(' \"');
+        console.log(compress_parts.length);
+        if (compress_parts.length == 3) {
+          compressFile(compress_parts[1].replace(/"/g, ''), compress_parts[2].replace(/"/g, ''));
+          console.log(`You are currently in ${currentDir}`);
+        } else {
+          console.log('Invalid input!')
+        }
+        break;
+
+        case input.startsWith('decompress '):
+          let decompress_parts = input.split(' ').length == 3 ? input.split(' ') : input.split(' \"');
+          if (decompress_parts.length == 3) {
+            decompressFile(decompress_parts[1].replace(/"/g, ''), decompress_parts[2].replace(/"/g, ''));
+            console.log(`You are currently in ${currentDir}`);
+          } else {
+            console.log('Invalid input!')
+          }
+          break;
         
       default:
+        console.log('Invalid input!')
 
     }
 
   });
   rl.on('close', () => console.log(`Thank you for using File Manager, ${username}, goodbye!`))
-
 
 }
 
